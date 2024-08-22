@@ -1,0 +1,11 @@
+ ${AnsiColor.BRIGHT_GREEN}
+ ██████╗ ██╗████████╗████████╗██████╗  █████╗  ██████╗██╗  ██╗
+██╔════╝ ██║╚══██╔══╝╚══██╔══╝██╔══██╗██╔══██╗██╔════╝██║ ██╔╝
+██║  ███╗██║   ██║      ██║   ██████╔╝███████║██║     █████╔╝ 
+${AnsiColor.BRIGHT_CYAN}██║   ██║██║   ██║      ██║   ██╔══██╗██╔══██║██║     ██╔═██╗ 
+╚██████╔╝██║   ██║      ██║   ██║  ██║██║  ██║╚██████╗██║  ██╗
+ ╚═════╝ ╚═╝   ╚═╝      ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝
+
+${AnsiColor.BRIGHT_CYAN}    GitTrack - GitHub Activity Tracker
+    By ${AnsiColor.BRIGHT_GREEN}Austin Sofaer ${AnsiColor.BRIGHT_CYAN}(aka. ${AnsiColor.BRIGHT_GREEN}V4N1LLA-1CE${AnsiColor.BRIGHT_CYAN})
+${AnsiColor.DEFAULT}
