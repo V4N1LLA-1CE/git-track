@@ -33,4 +33,4 @@ build/
 .vscode/
 
 ### GitTrack Log ###
-./GitTrack.log
+GitTrack.log
