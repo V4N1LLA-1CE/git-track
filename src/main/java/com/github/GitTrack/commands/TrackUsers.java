@@ -32,14 +32,82 @@ public class TrackUsers {
     // fetch user details
     Mono<GitHubUser> userMono = gitHubService.getUser(username);
 
+    // return userMono
+    // .map(user -> String.format("Hello %s\nName: %s\nFollowers: %d\nFollowing:
+    // %d\nPublic Repos: %d",
+    // user.login(), user.name(), user.followers(), user.following(),
+    // user.publicRepos()))
+    // .onErrorReturn("Error: Unable to fetch user details.")
+    // .block();
+
     return userMono
-        .map(user -> String.format("Hello %s\nName: %s\nFollowers: %d\nFollowing: %d\nPublic Repos: %d",
+        .map(user -> String.format(
+            "login: %s\n" +
+                "id: %d\n" +
+                "nodeId: %s\n" +
+                "avatarUrl: %s\n" +
+                "gravatarId: %s\n" +
+                "url: %s\n" +
+                "htmlUrl: %s\n" +
+                "followersUrl: %s\n" +
+                "followingUrl: %s\n" +
+                "gistsUrl: %s\n" +
+                "starredUrl: %s\n" +
+                "subscriptionsUrl: %s\n" +
+                "organizationsUrl: %s\n" +
+                "reposUrl: %s\n" +
+                "eventsUrl: %s\n" +
+                "receivedEventsUrl: %s\n" +
+                "type: %s\n" +
+                "siteAdmin: %b\n" +
+                "name: %s\n" +
+                "company: %s\n" +
+                "blog: %s\n" +
+                "location: %s\n" +
+                "email: %s\n" +
+                "hireable: %s\n" +
+                "bio: %s\n" +
+                "twitterUsername: %s\n" +
+                "publicRepos: %d\n" +
+                "publicGists: %d\n" +
+                "followers: %d\n" +
+                "following: %d\n" +
+                "createdAt: %s\n" +
+                "updatedAt: %s",
             user.login(),
+            user.id(),
+            user.nodeId(),
+            user.avatarUrl(),
+            user.gravatarId(),
+            user.url(),
+            user.htmlUrl(),
+            user.followersUrl(),
+            user.followingUrl(),
+            user.gistsUrl(),
+            user.starredUrl(),
+            user.subscriptionsUrl(),
+            user.organizationsUrl(),
+            user.reposUrl(),
+            user.eventsUrl(),
+            user.receivedEventsUrl(),
+            user.type(),
+            user.siteAdmin(),
             user.name(),
+            user.company(),
+            user.blog(),
+            user.location(),
+            user.email(),
+            user.hireable(),
+            user.bio(),
+            user.twitterUsername(),
+            user.publicRepos(),
+            user.publicGists(),
             user.followers(),
             user.following(),
-            user.publicRepos()))
+            user.createdAt(),
+            user.updatedAt()))
         .onErrorReturn("Error: Unable to fetch user details.")
         .block();
+
   }
 }

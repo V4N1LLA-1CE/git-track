@@ -1,29 +1,26 @@
 package com.github.GitTrack;
 
-import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * GitHubUser
- */
 public record GitHubUser(
     String login,
     int id,
-    String nodeId,
-    String avatarUrl,
-    String gravatarId,
+    @JsonProperty("node_id") String nodeId, // Ensure correct mapping
+    @JsonProperty("avatar_url") String avatarUrl,
+    @JsonProperty("gravatar_id") String gravatarId,
     String url,
-    String htmlUrl,
-    String followersUrl,
-    String followingUrl,
-    String gistsUrl,
-    String starredUrl,
-    String subscriptionsUrl,
-    String organizationsUrl,
-    String reposUrl,
-    String eventsUrl,
-    String receivedEventsUrl,
+    @JsonProperty("html_url") String htmlUrl,
+    @JsonProperty("followers_url") String followersUrl,
+    @JsonProperty("following_url") String followingUrl,
+    @JsonProperty("gists_url") String gistsUrl,
+    @JsonProperty("starred_url") String starredUrl,
+    @JsonProperty("subscriptions_url") String subscriptionsUrl,
+    @JsonProperty("organizations_url") String organizationsUrl,
+    @JsonProperty("repos_url") String reposUrl,
+    @JsonProperty("events_url") String eventsUrl,
+    @JsonProperty("received_events_url") String receivedEventsUrl,
     String type,
-    boolean siteAdmin,
+    @JsonProperty("site_admin") boolean siteAdmin,
     String name,
     String company,
     String blog,
@@ -31,11 +28,11 @@ public record GitHubUser(
     String email,
     Boolean hireable,
     String bio,
-    String twitterUsername,
-    int publicRepos,
-    int publicGists,
+    @JsonProperty("twitter_username") String twitterUsername,
+    @JsonProperty("public_repos") int publicRepos,
+    @JsonProperty("public_gists") int publicGists,
     int followers,
     int following,
-    LocalDateTime createdAt,
-    LocalDateTime updatedAt) {
+    @JsonProperty("created_at") String createdAt,
+    @JsonProperty("updated_at") String updatedAt) {
 }
