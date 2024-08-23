@@ -26,7 +26,7 @@ public class TrackUsers {
       @ShellOption(defaultValue = "", help = "The username of the GitHub user") String username) {
 
     if (username.trim().isEmpty() || username == null) {
-      return " Error: Username has not been provided.\n Example Usage: gt show <username>";
+      return "Error: Username has not been provided.\nExample Usage: gt show <username>";
     }
 
     // fetch user details
