@@ -20,3 +20,7 @@ The application is built using Spring Boot and Spring Shell. The GitHub API clie
 ## Contributing
 Contributions are welcome! Please fork the repository and submit a pull request.
 
+## License
+This project is licensed under the MIT License. See the [LICENSE](https://github.com/V4N1LLA-1CE/git-track/blob/main/LICENSE) file for more details.
+
+
