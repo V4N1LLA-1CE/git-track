@@ -32,14 +32,6 @@ public class TrackUsers {
     // fetch user details
     Mono<GitHubUser> userMono = gitHubService.getUser(username);
 
-    // return userMono
-    // .map(user -> String.format("Hello %s\nName: %s\nFollowers: %d\nFollowing:
-    // %d\nPublic Repos: %d",
-    // user.login(), user.name(), user.followers(), user.following(),
-    // user.publicRepos()))
-    // .onErrorReturn("Error: Unable to fetch user details.")
-    // .block();
-
     return userMono
         .map(user -> String.format(
             "login: %s\n" +
