@@ -13,10 +13,32 @@ import reactor.util.retry.Retry;
  */
 @Service
 public class GitHubService {
-  private final WebClient client;
+  private final String baseUrl = "https://api.github.com";
+  private WebClient client;
+  private String token;
 
   public GitHubService() {
-    this.client = WebClient.create("https://api.github.com");
+    this.client = this.createClient();
+  }
+
+  public WebClient createClient() {
+    // build client
+    WebClient.Builder builder = WebClient.builder()
+        .baseUrl(this.baseUrl)
+        .defaultHeader("accept", "application/vnd.github+json");
+
+    if (token != null && !token.isEmpty()) {
+      builder.defaultHeader("authorization", "Bearer " + token);
+    }
+
+    return builder.build();
+
+  }
+
+  public void setToken(String token) {
+    // set token and set
+    this.token = token;
+    this.client = createClient();
   }
 
   public Mono<GitHubUser> getUser(String username) {
