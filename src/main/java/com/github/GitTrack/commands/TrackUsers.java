@@ -1,5 +1,10 @@
 package com.github.GitTrack.commands;
 
+import java.time.LocalDateTime;
+import java.time.format.TextStyle;
+import java.time.temporal.ChronoUnit;
+import java.util.Locale;
+
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
@@ -32,74 +37,108 @@ public class TrackUsers {
     // fetch user details
     Mono<GitHubUser> userMono = gitHubService.getUser(username);
 
-    return userMono
+    String result = userMono
         .map(user -> String.format(
-            "login: %s\n" +
-                "id: %d\n" +
-                "nodeId: %s\n" +
-                "avatarUrl: %s\n" +
-                "gravatarId: %s\n" +
-                "url: %s\n" +
-                "htmlUrl: %s\n" +
-                "followersUrl: %s\n" +
-                "followingUrl: %s\n" +
-                "gistsUrl: %s\n" +
-                "starredUrl: %s\n" +
-                "subscriptionsUrl: %s\n" +
-                "organizationsUrl: %s\n" +
-                "reposUrl: %s\n" +
-                "eventsUrl: %s\n" +
-                "receivedEventsUrl: %s\n" +
-                "type: %s\n" +
-                "siteAdmin: %b\n" +
-                "name: %s\n" +
-                "company: %s\n" +
-                "blog: %s\n" +
-                "location: %s\n" +
-                "email: %s\n" +
-                "hireable: %s\n" +
-                "bio: %s\n" +
-                "twitterUsername: %s\n" +
-                "publicRepos: %d\n" +
-                "publicGists: %d\n" +
-                "followers: %d\n" +
-                "following: %d\n" +
-                "createdAt: %s\n" +
-                "updatedAt: %s",
-            user.login(),
+            "GitHub User Details%n" +
+                "===================%n%n" +
+                "Username:              %s%n" +
+                "Account ID:            %d%n" +
+                "Avatar Link:           %s%n" +
+                "Profile Link:          %s%n%n" +
+                "Type:                  %s%n" +
+                "Site Admin:            %s%n%n" +
+                "Name:                  %s%n" +
+                "Company:               %s%n" +
+                "Blog:                  %s%n" +
+                "Location:              %s%n" +
+                "Email:                 %s%n" +
+                "Hireable:              %s%n" +
+                "Bio:                   %s%n" +
+                "Twitter Username:      %s%n%n" +
+                "Public Repos:          %d%n" +
+                "Public Gists:          %d%n" +
+                "Followers:             %d%n" +
+                "Following:             %d%n%n" +
+                "Created At:            %s%n" +
+                "Last Updated:          %s%n",
+            user.login() != null ? user.login() : "-",
             user.id(),
-            user.nodeId(),
-            user.avatarUrl(),
-            user.gravatarId(),
-            user.url(),
-            user.htmlUrl(),
-            user.followersUrl(),
-            user.followingUrl(),
-            user.gistsUrl(),
-            user.starredUrl(),
-            user.subscriptionsUrl(),
-            user.organizationsUrl(),
-            user.reposUrl(),
-            user.eventsUrl(),
-            user.receivedEventsUrl(),
-            user.type(),
-            user.siteAdmin(),
-            user.name(),
-            user.company(),
-            user.blog(),
-            user.location(),
-            user.email(),
-            user.hireable(),
-            user.bio(),
-            user.twitterUsername(),
+            user.avatarUrl() != null ? user.avatarUrl() : "-",
+            user.htmlUrl() != null ? user.htmlUrl() : "-",
+            user.type() != null ? user.type() : "-",
+            user.siteAdmin() ? "Yes" : "No",
+            user.name() != null ? user.name() : "-",
+            user.company() != null ? user.company() : "-",
+            user.blog() != null ? user.blog() : "-",
+            user.location() != null ? user.location() : "-",
+            user.email() != null ? user.email() : "-",
+            user.hireable() != null ? user.hireable() : "-",
+            user.bio() != null ? user.bio() : "-",
+            user.twitterUsername() != null ? user.twitterUsername() : "-",
             user.publicRepos(),
             user.publicGists(),
             user.followers(),
             user.following(),
-            user.createdAt(),
-            user.updatedAt()))
+            user.createdAt() != null ? formatDate(user.createdAt()) : "-",
+            user.updatedAt() != null ? formatDate(user.updatedAt()) : "-"))
         .onErrorReturn("Error: Unable to fetch user details.")
         .block();
 
+    return result;
+
+  }
+
+  public String formatDate(LocalDateTime date) {
+    // // get time in the past
+    // LocalDateTime past = date;
+    //
+    // // get time now
+    // LocalDateTime now = LocalDateTime.now();
+    //
+    // // calculate years and months
+    // long years = ChronoUnit.YEARS.between(past, now);
+    // LocalDateTime adjustedTime = past.plusYears(years);
+    // long months = ChronoUnit.MONTHS.between(adjustedTime, now);
+    //
+    // // calculate days, hours, minutes
+    // adjustedTime = adjustedTime.plusMonths(months);
+    // long days = ChronoUnit.DAYS.between(adjustedTime, now);
+    // adjustedTime = adjustedTime.plusDays(days);
+    // long hours = ChronoUnit.HOURS.between(adjustedTime, now);
+    // adjustedTime = adjustedTime.plusHours(hours);
+    // long minutes = ChronoUnit.MINUTES.between(adjustedTime, now);
+
+    // get data from datetime object
+    int day = date.getDayOfMonth();
+    String month = date.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
+    int year = date.getYear();
+
+    // get suffix for day
+    String suffix;
+    if (day >= 11 && day <= 13) {
+      suffix = "th";
+    } else {
+      switch (day % 10) {
+
+        case 1:
+          suffix = "st";
+          break;
+
+        case 2:
+          suffix = "nd";
+          break;
+
+        case 3:
+          suffix = "rd";
+          break;
+
+        default:
+          suffix = "th";
+          break;
+      }
+    }
+
+    // format date
+    return (String.format("%d%s %s %d", day, suffix, month, year));
   }
 }

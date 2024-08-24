@@ -1,5 +1,7 @@
 package com.github.GitTrack;
 
+import java.time.LocalDateTime;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record GitHubUser(
@@ -33,6 +35,6 @@ public record GitHubUser(
     @JsonProperty("public_gists") int publicGists,
     int followers,
     int following,
-    @JsonProperty("created_at") String createdAt,
-    @JsonProperty("updated_at") String updatedAt) {
+    @JsonProperty("created_at") LocalDateTime createdAt,
+    @JsonProperty("updated_at") LocalDateTime updatedAt) {
 }
