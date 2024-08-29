@@ -41,26 +41,26 @@ public class TrackUsers {
         .map(user -> String.format(
             "GitHub User Details%n" +
                 "===================%n%n" +
-                "Username:              %s%n" +
-                "Account ID:            %d%n" +
-                "Avatar Link:           %s%n" +
-                "Profile Link:          %s%n%n" +
-                "Type:                  %s%n" +
-                "Site Admin:            %s%n%n" +
-                "Name:                  %s%n" +
-                "Company:               %s%n" +
-                "Blog:                  %s%n" +
-                "Location:              %s%n" +
-                "Email:                 %s%n" +
-                "Hireable:              %s%n" +
-                "Bio:                   %s%n" +
-                "Twitter Username:      %s%n%n" +
-                "Public Repos:          %d%n" +
-                "Public Gists:          %d%n" +
-                "Followers:             %d%n" +
-                "Following:             %d%n%n" +
-                "Created At:            %s%n" +
-                "Last Updated:          %s%n",
+                "Username: %s%n" +
+                "Account ID: %d%n" +
+                "Avatar Link: %s%n" +
+                "Profile Link: %s%n%n" +
+                "Type: %s%n" +
+                "Site Admin: %s%n%n" +
+                "Name: %s%n" +
+                "Company: %s%n" +
+                "Blog: %s%n" +
+                "Location: %s%n" +
+                "Email: %s%n" +
+                "Hireable: %s%n" +
+                "Bio: %s%n" +
+                "Twitter Username: %s%n%n" +
+                "Public Repos: %d%n" +
+                "Public Gists: %d%n" +
+                "Followers: %d%n" +
+                "Following: %d%n%n" +
+                "Created At: %s%n" +
+                "Last Updated: %s%n",
             user.login() != null ? user.login() : "-",
             user.id(),
             user.avatarUrl() != null ? user.avatarUrl() : "-",
@@ -89,28 +89,10 @@ public class TrackUsers {
   }
 
   public String formatDate(LocalDateTime date) {
-    // // get time in the past
-    // LocalDateTime past = date;
-    //
-    // // get time now
-    // LocalDateTime now = LocalDateTime.now();
-    //
-    // // calculate years and months
-    // long years = ChronoUnit.YEARS.between(past, now);
-    // LocalDateTime adjustedTime = past.plusYears(years);
-    // long months = ChronoUnit.MONTHS.between(adjustedTime, now);
-    //
-    // // calculate days, hours, minutes
-    // adjustedTime = adjustedTime.plusMonths(months);
-    // long days = ChronoUnit.DAYS.between(adjustedTime, now);
-    // adjustedTime = adjustedTime.plusDays(days);
-    // long hours = ChronoUnit.HOURS.between(adjustedTime, now);
-    // adjustedTime = adjustedTime.plusHours(hours);
-    // long minutes = ChronoUnit.MINUTES.between(adjustedTime, now);
-
     // get data from datetime object
     int day = date.getDayOfMonth();
-    String month = date.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
+    String month = date.getMonth().getDisplayName(TextStyle.FULL,
+        Locale.ENGLISH);
     int year = date.getYear();
 
     // get suffix for day
@@ -140,5 +122,6 @@ public class TrackUsers {
 
     // format date
     return (String.format("%d%s %s %d", day, suffix, month, year));
+
   }
 }
