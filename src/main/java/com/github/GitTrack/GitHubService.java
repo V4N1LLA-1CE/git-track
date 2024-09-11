@@ -90,11 +90,17 @@ public class GitHubService {
     try {
       // Formatter for taking in dateString (Standard is ISO Datetime)
       java.time.format.DateTimeFormatter inputFormatter = java.time.format.DateTimeFormatter.ISO_DATE_TIME;
+
       // Formatter for outputting dateString with custom pattern
       java.time.format.DateTimeFormatter outputFormatter = java.time.format.DateTimeFormatter
-          .ofPattern("d'th' MMMM yyyy, HH:mm");
+          .ofPattern("d'th' MMMM yyyy, hh:mm a");
+
       java.time.LocalDateTime date = java.time.LocalDateTime.parse(dateString, inputFormatter);
-      return date.format(outputFormatter);
+      String formattedDate = date.format(outputFormatter);
+
+      // Replace 'am' with 'AM' and 'pm' with 'PM' using regex case sensitive flag
+      return formattedDate.replaceAll("(?i)am", "AM").replaceAll("(?i)pm", "PM");
+
     } catch (Exception e) {
       return dateString;
     }
