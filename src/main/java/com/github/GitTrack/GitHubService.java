@@ -6,7 +6,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 import org.json.JSONObject;
-import org.springframework.shell.standard.ShellOption;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,6 +14,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class GitHubService {
   private final String baseUrl = "https://api.github.com";
+
+  private final com.github.GitTrack.Formatter formatter;
+
+  public GitHubService(Formatter formatter) {
+    this.formatter = formatter;
+  }
 
   public String getUser(String username) {
     try {
@@ -39,70 +44,11 @@ public class GitHubService {
       JSONObject jsonObject = new JSONObject(responseBody);
 
       // Extract and format data from JSON
-      return formatUserDetails(jsonObject);
+      return this.formatter.formatUserDetails(jsonObject);
 
     } catch (Exception e) {
       e.printStackTrace();
       return "Error occurred";
-    }
-  }
-
-  private String formatUserDetails(JSONObject jsonObject) {
-    // Format each field into a readable string
-    String result = "Show GitHub User Details\n" +
-        "===================\n\n" +
-        "Username: " + jsonObject.optString("login", "-") + "\n" +
-        "Account ID: " + jsonObject.optInt("id", -1) + "\n" +
-        "Avatar Link: " + jsonObject.optString("avatar_url", "-") + "\n" +
-        "Profile Link: " + jsonObject.optString("html_url", "-") + "\n\n" +
-
-        // "Type: " + jsonObject.optString("type", "-") + "\n" +
-        // "Site Admin: " + (jsonObject.optBoolean("site_admin", false) ? "Yes" : "No")
-        // + "\n\n" +
-
-        "Name: " + jsonObject.optString("name", "-") + "\n" +
-        "Company: " + jsonObject.optString("company", "-") + "\n" +
-        "Blog: " + (jsonObject.optString("blog", "").trim().isEmpty() ? "-" : jsonObject.optString("blog")) + "\n" +
-        "Location: " + jsonObject.optString("location", "-") + "\n" +
-        "Email: " + jsonObject.optString("email", "-") + "\n" +
-        "Hireable: " + (jsonObject.optBoolean("hireable", false) ? "true" : "false") + "\n" +
-        "Bio: " + jsonObject.optString("bio", "-") + "\n\n" +
-
-        "Twitter Username: " + jsonObject.optString("twitter_username", "-") + "\n\n" +
-
-        "Public Repos: " + jsonObject.optInt("public_repos", 0) + "\n" +
-        "Public Gists: " + jsonObject.optInt("public_gists", 0) + "\n" +
-        "Followers: " + jsonObject.optInt("followers", 0) + "\n" +
-        "Following: " + jsonObject.optInt("following", 0) + "\n\n" +
-
-        "Created At: " + formatDate(jsonObject.optString("created_at", "-")) + "\n" +
-        "Last Updated: " + formatDate(jsonObject.optString("updated_at", "-")) + "\n";
-
-    return result;
-  }
-
-  private String formatDate(String dateString) {
-    if (dateString.equals("-")) {
-      return "-";
-    }
-
-    // Convert the date string to a more readable format (e.g., 1st February 2009)
-    try {
-      // Formatter for taking in dateString (Standard is ISO Datetime)
-      java.time.format.DateTimeFormatter inputFormatter = java.time.format.DateTimeFormatter.ISO_DATE_TIME;
-
-      // Formatter for outputting dateString with custom pattern
-      java.time.format.DateTimeFormatter outputFormatter = java.time.format.DateTimeFormatter
-          .ofPattern("d'th' MMMM yyyy, hh:mm a");
-
-      java.time.LocalDateTime date = java.time.LocalDateTime.parse(dateString, inputFormatter);
-      String formattedDate = date.format(outputFormatter);
-
-      // Replace 'am' with 'AM' and 'pm' with 'PM' using regex case sensitive flag
-      return formattedDate.replaceAll("(?i)am", "AM").replaceAll("(?i)pm", "PM");
-
-    } catch (Exception e) {
-      return dateString;
     }
   }
 }
