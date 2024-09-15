@@ -1,16 +1,10 @@
 package com.github.GitTrack.commands;
 
-import java.time.LocalDateTime;
-import java.time.format.TextStyle;
-import java.util.Locale;
-
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 
 import com.github.GitTrack.GitHubService;
-
-import reactor.core.publisher.Mono;
 
 /**
  * TrackUsers
@@ -28,8 +22,17 @@ public class TrackUsers {
   public String show(
       @ShellOption(defaultValue = "", help = "The username of the GitHub user") String username) {
 
+    // ANSI color codes
+    String RED = "\u001B[31m";
+    String GREEN = "\u001B[32m";
+    String RESET = "\u001B[0m";
+    String BOLD = "\u001B[1m";
+    String BLUE = "\u001B[34m";
+
     if (username.trim().isEmpty() || username == null) {
-      return "Error: Username has not been provided.\nExample Usage: gt show <username>";
+      return BOLD + RED + "Error: Username has not been provided." + RESET + BOLD + GREEN + "\n\nExample Usage: "
+          + RESET
+          + "gt show " + BLUE + "<username>" + RESET + "\n";
     }
 
     // fetch user details
