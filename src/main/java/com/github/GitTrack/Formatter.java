@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.time.format.*;
-import java.util.ArrayList;
 
 /**
  * Custom formatter class that includes methods related to formatting output for
@@ -169,6 +168,5 @@ public class Formatter {
       default:
         return "th";
     }
-
   }
 }
