@@ -1,10 +1,13 @@
 package com.github.GitTrack;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.time.format.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Custom formatter class that includes methods related to formatting output for
@@ -25,6 +28,11 @@ public class Formatter {
   private final String BLUE = "\u001B[34m";
   private final String UNDERLINE = "\u001B[4m";
 
+  // Create standardised headers and separators for output
+  private final String header = BOLD + BLUE;
+  private final String separator = BOLD + BLUE
+      + "================================================================================\n\n" + RESET;
+
   /**
    * Formats a JSONObject containing GitHub user details into a human-readable
    * string.
@@ -37,10 +45,6 @@ public class Formatter {
    *         the CLI
    */
   public String formatUserDetails(JSONObject jsonObject) {
-    // Format each field into a readable string
-    String header = BOLD + BLUE + "Show User Details\n" + RESET;
-    String separator = BOLD + BLUE
-        + "================================================================================\n\n" + RESET;
 
     // Table rows
     String[] rows = {
@@ -69,14 +73,105 @@ public class Formatter {
      * objects everytime I use + operator.
      */
     StringBuilder result = new StringBuilder();
-    result.append(header).append(separator);
+    result.append(this.header).append("Show User Details\n" + RESET).append(this.separator);
 
     for (String row : rows) {
       result.append(row).append("\n");
     }
-    result.append("\n").append(separator);
+    result.append("\n").append(this.separator);
 
     return result.toString();
+  }
+
+  /**
+   * Formats a JSONArray and returns a formatted string i.e.
+   * Output:
+   * - Pushed 3 commits to kamranahmedse/developer-roadmap
+   * - Opened a new issue in kamranahmedse/developer-roadmap
+   * - Starred kamranahmedse/developer-roadmap
+   * - ...
+   *
+   * @param data - A JSONArray i.e. [{id: 1, type:"PushEvent"}, {id: 2,
+   *             type:"CommitEvent"}]
+   */
+  public String formatEvent(JSONArray data) {
+    List<JSONObject> events = new ArrayList<>();
+
+    // Loop through each JSONObject and filter supported events to new array
+    for (int i = 0; i < data.length(); i++) {
+      if (isSupportedEvent(data.getJSONObject(i).getString("type"))) {
+        events.add(data.getJSONObject(i));
+      }
+    }
+
+    List<String> outputStringArray = new ArrayList<>();
+
+    // Loop through events array and construct string array depending on event type
+    for (int i = 0; i < events.size(); i++) {
+      JSONObject payload = events.get(i).getJSONObject("payload");
+      String type = events.get(i).getString("type");
+      String repoName = events.get(i).getJSONObject("repo").getString("name");
+
+      // limit result to 10
+      if (outputStringArray.size() == 10) {
+        break;
+      }
+
+      if (type.equals("ForkEvent")) {
+        break;
+      } else if (type.equals("IssuesEvent")) {
+        break;
+      } else if (type.equals("PublicEvent")) {
+        break;
+      } else if (type.equals("PushEvent")) {
+        String result = String.format("- Pushed %s %s to %s", Integer.toString(payload.getInt("distinct_size")),
+            (payload.getInt("distinct_size") == 1 ? "commit" : "commits"),
+            repoName);
+        outputStringArray.add(result);
+      } else {
+        throw new Error(
+            String.format("Event type not supported. Error in formatEvent in Formatter.java\nEvent passed in:",
+                events.get(i)));
+      }
+    }
+
+    // Construct string using StringBuilder
+    StringBuilder outputSbStringBuilder = new StringBuilder();
+    outputSbStringBuilder.append(this.header).append("Show User Events (10 Most Recent)\n" + RESET)
+        .append(this.separator);
+    outputSbStringBuilder.append("Output:\n");
+    for (String str : outputStringArray) {
+      outputSbStringBuilder.append(str).append("\n");
+    }
+    outputSbStringBuilder.append("\n\n").append(this.separator);
+    return outputSbStringBuilder.toString();
+  }
+
+  /**
+   * Checks the github event type and only allows supported types
+   *
+   * @param type - a string of event type i.e. "PushEvent"
+   *
+   *             Supported events: ForkEvent, IssuesEvent, PublicEvent, PushEvent
+   */
+  private boolean isSupportedEvent(String type) {
+    switch (type) {
+
+      case "ForkEvent":
+        return true;
+
+      case "IssuesEvent":
+        return true;
+
+      case "PublicEvent":
+        return true;
+
+      case "PushEvent":
+        return true;
+
+      default:
+        return false;
+    }
   }
 
   /**
