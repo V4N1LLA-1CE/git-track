@@ -104,16 +104,16 @@ public class Formatter {
       }
     }
 
-    List<String> outputStringArray = new ArrayList<>();
+    List<String> eventOutputStringArray = new ArrayList<>();
 
     // Loop through events array and construct string array depending on event type
     for (int i = 0; i < events.size(); i++) {
       JSONObject payload = events.get(i).getJSONObject("payload");
       String type = events.get(i).getString("type");
-      String repoName = events.get(i).getJSONObject("repo").getString("name");
+      String repoName = BOLD + GREEN + events.get(i).getJSONObject("repo").getString("name") + RESET;
 
       // limit result to 10
-      if (outputStringArray.size() == 10) {
+      if (eventOutputStringArray.size() == 10) {
         break;
       }
 
@@ -124,10 +124,11 @@ public class Formatter {
       } else if (type.equals("PublicEvent")) {
         break;
       } else if (type.equals("PushEvent")) {
-        String result = String.format("- Pushed %s %s to %s", Integer.toString(payload.getInt("distinct_size")),
-            (payload.getInt("distinct_size") == 1 ? "commit" : "commits"),
+        String result = String.format("- Pushed %s %s to %s",
+            (BOLD + BLUE + Integer.toString(payload.getInt("distinct_size"))),
+            (payload.getInt("distinct_size") == 1 ? "commit" + RESET : "commits" + RESET),
             repoName);
-        outputStringArray.add(result);
+        eventOutputStringArray.add(result);
       } else {
         throw new Error(
             String.format("Event type not supported. Error in formatEvent in Formatter.java\nEvent passed in:",
@@ -135,16 +136,21 @@ public class Formatter {
       }
     }
 
-    // Construct string using StringBuilder
-    StringBuilder outputSbStringBuilder = new StringBuilder();
-    outputSbStringBuilder.append(this.header).append("Show User Events (10 Most Recent)\n" + RESET)
-        .append(this.separator);
-    outputSbStringBuilder.append("Output:\n");
-    for (String str : outputStringArray) {
-      outputSbStringBuilder.append(str).append("\n");
+    // Construct string using StringBuilder if theres activities
+    if (eventOutputStringArray.size() != 0) {
+      StringBuilder outputSbStringBuilder = new StringBuilder();
+      outputSbStringBuilder.append(this.header).append("Show User Events (10 Most Recent)\n" + RESET)
+          .append(this.separator);
+      outputSbStringBuilder.append(BOLD + "Output:\n" + RESET);
+      for (String str : eventOutputStringArray) {
+        outputSbStringBuilder.append(str).append("\n");
+      }
+      outputSbStringBuilder.append("\n\n").append(this.separator);
+      return outputSbStringBuilder.toString();
+
+    } else {
+      return "No public events found.";
     }
-    outputSbStringBuilder.append("\n\n").append(this.separator);
-    return outputSbStringBuilder.toString();
   }
 
   /**
