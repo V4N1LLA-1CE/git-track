@@ -125,8 +125,8 @@ public class Formatter {
         break;
       } else if (type.equals("PushEvent")) {
         String result = String.format("- Pushed %s %s to %s",
-            (BOLD + BLUE + Integer.toString(payload.getInt("distinct_size"))),
-            (payload.getInt("distinct_size") == 1 ? "commit" + RESET : "commits" + RESET),
+            (BOLD + BLUE + Integer.toString(payload.getInt("size"))),
+            (payload.getInt("size") == 1 ? "commit" + RESET : "commits" + RESET),
             repoName);
         eventOutputStringArray.add(result);
       } else {
