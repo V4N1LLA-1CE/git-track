@@ -20,10 +20,6 @@ The application is built using Spring Boot and Spring Shell.
 - Simple and intuitive CLI commands for quick access i.e. `gt show <username>`
 - Enhance CLI output with colors and formatting.
 
-## Contributing
-
-Contributions are welcome! Please fork the repository and submit a pull request.
-
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](https://github.com/V4N1LLA-1CE/git-track/blob/main/LICENSE) file for more details.
